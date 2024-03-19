@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: Blockchain Unspent Outputs API
+  description: API for retrieving unspent outputs for a given Bitcoin address.
+  version: 1.0.0
+servers:
+  - url: https://blockchain.info
+    description: Blockchain.info API server
+paths:
+  /unspent:
+    get:
+      summary: Get unspent outputs for a Bitcoin address
+      operationId: getUnspentOutputs
+      parameters:
+        - name: active
+          in: query
+          description: Bitcoin address (base58 or xpub)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of unspent outputs for the given address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unspent_outputs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        tx_hash_big_endian:
+                          type: string
+                          description: The transaction hash in big endian format
+                        tx_hash:
+                          type: string
+                          description: The transaction hash
+                        tx_output_n:
+                          type: integer
+                          description: The index of the output in the transaction
+                        script:
+                          type: string
+                          description: The output script
+                        value:
+                          type: integer
+                          description: The value of the output in satoshis
+                        value_hex:
+                          type: string
+                          description: The hexadecimal value of the output
+                        confirmations:
+                          type: integer
+                          description: The number of confirmations
+                        tx_index:
+                          type: integer
+                          description: The transaction index

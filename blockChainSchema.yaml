@@ -1,12 +1,164 @@
 openapi: 3.1.0
 info:
-  title: Blockchain Unspent Outputs API
-  description: API for retrieving unspent outputs for a given Bitcoin address.
+  title: Blockchain API
+  description: APIs for retrieving Bitcoin-related information from Blockchain.info
   version: 1.0.0
 servers:
   - url: https://blockchain.info
     description: Blockchain.info API server
 paths:
+  /unconfirmed-transactions:
+    get:
+      summary: Get unconfirmed Bitcoin transactions
+      operationId: getUnconfirmedTransactions
+      responses:
+        '200':
+          description: A list of unconfirmed Bitcoin transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        hash:
+                          type: string
+                          description: The hash of the transaction
+                        ver:
+                          type: integer
+                          description: The transaction version
+                        vin_sz:
+                          type: integer
+                          description: The number of inputs in the transaction
+                        vout_sz:
+                          type: integer
+                          description: The number of outputs in the transaction
+                        size:
+                          type: integer
+                          description: The size of the transaction in bytes
+                        weight:
+                          type: integer
+                          description: The weight of the transaction
+                        fee:
+                          type: integer
+                          description: The transaction fee
+                        relayed_by:
+                          type: string
+                          description: The IP address of the node that relayed the transaction
+                        lock_time:
+                          type: integer
+                          description: The transaction lock time
+                        tx_index:
+                          type: integer
+                          description: The transaction index
+                        double_spend:
+                          type: boolean
+                          description: Indicates if the transaction is a double spend
+                        time:
+                          type: integer
+                          description: The time of the transaction
+                        block_index:
+                          type: integer
+                          description: The index of the block containing the transaction
+                        block_height:
+                          type: integer
+                          description: The height of the block containing the transaction
+                        inputs:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              sequence:
+                                type: integer
+                                description: The input sequence number
+                              witness:
+                                type: string
+                                description: The input witness
+                              script:
+                                type: string
+                                description: The input script
+                              index:
+                                type: integer
+                                description: The index of the input
+                              prev_out:
+                                type: object
+                                properties:
+                                  addr:
+                                    type: string
+                                    description: The address of the previous output
+                                  n:
+                                    type: integer
+                                    description: The index of the previous output
+                                  script:
+                                    type: string
+                                    description: The previous output script
+                                  spending_outpoints:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        n:
+                                          type: integer
+                                          description: The index of the spending outpoint
+                                        tx_index:
+                                          type: integer
+                                          description: The index of the spending transaction
+                                  spent:
+                                    type: boolean
+                                    description: Indicates if the previous output is spent
+                                  tx_index:
+                                    type: integer
+                                    description: The index of the transaction
+                                  type:
+                                    type: integer
+                                    description: The type of the previous output
+                                  value:
+                                    type: integer
+                                    description: The value of the previous output
+                        out:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: integer
+                                description: The type of the output
+                              spent:
+                                type: boolean
+                                description: Indicates if the output is spent
+                              value:
+                                type: integer
+                                description: The value of the output
+                              spending_outpoints:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    n:
+                                      type: integer
+                                      description: The index of the spending outpoint
+                                    tx_index:
+                                      type: integer
+                                      description: The index of the spending transaction
+                              n:
+                                type: integer
+                                description: The index of the output
+                              tx_index:
+                                type: integer
+                                description: The index of the transaction
+                              script:
+                                type: string
+                                description: The output script
+                              addr:
+                                type: string
+                                description: The address associated with the output
+                        rbf:
+                          type: boolean
+                          description: Indicates if the transaction has opt-in replace-by-fee enabled
+
   /unspent:
     get:
       summary: Get unspent outputs for a Bitcoin address
